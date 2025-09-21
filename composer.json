@@ -1,0 +1,21 @@
+{
+    "name": "michaelalanaxl/ecommerce-full-zambia",
+    "description": "Mini e-commerce skeleton with Slim 4 and RainTPL",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Michael Alan"
+        }
+    ],
+    "require": {
+        "slim/slim": "^4.10",
+        "slim/psr7": "^1.6",
+        "rain/raintpl": ">=3.1"
+    }
+}
