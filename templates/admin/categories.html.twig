@@ -1,0 +1,38 @@
+{% extends "admin/layout.html.twig" %}
+
+{% block content %}
+<h2>Categorias</h2>
+
+<form method="POST" action="/admin/categorias" style="margin-bottom: 20px;">
+    <input type="text" name="descategory" placeholder="Nome da categoria" required>
+    <button type="submit">Adicionar</button>
+</form>
+
+<table border="1" cellpadding="8" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Descrição</th>
+            <th>Criado em</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cat in categories %}
+            <tr>
+                <td>{{ cat.idcategory }}</td>
+                <td>{{ cat.descategory }}</td>
+                <td>{{ cat.dtregister }}</td>
+                <td>
+                    <a href="/admin/categorias/{{ cat.idcategory }}/editar">Editar</a> |
+                    <a href="/admin/categorias/delete/{{ cat.idcategory }}" onclick="return confirm('Deseja excluir?')">Excluir</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4"><em>Nenhuma categoria cadastrada.</em></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
