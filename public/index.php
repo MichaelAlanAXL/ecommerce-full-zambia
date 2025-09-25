@@ -7,6 +7,7 @@ use Slim\Views\TwigMiddleware;
 
 $app = AppFactory::create();
 $twig = Twig::create(__DIR__ . '/../templates', ['cache' => false]);
+$app->add(new \App\Middleware\CategoriesMiddleware($twig));
 $app->add(TwigMiddleware::create($app, $twig));
 
 (require __DIR__ . '/../public/routes_site.php')($app, $twig);
