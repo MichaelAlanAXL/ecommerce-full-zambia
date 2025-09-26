@@ -18,13 +18,13 @@ class HomeController
     private function render(Response $response, string $template, array $data = [], bool $withLayout = true): Response 
     {
         if ($withLayout) {
-            $response = $this->twig->render($response, 'header.html.twig', $data);
+            $response = $this->twig->render($response, 'site/header.html.twig', $data);
         }
 
         $response = $this->twig->render($response, $template . '.html.twig', $data);
 
         if ($withLayout) {
-            $response = $this->twig->render($response, 'footer.html.twig', $data);
+            $response = $this->twig->render($response, 'site/footer.html.twig', $data);
         }
 
         return $response;

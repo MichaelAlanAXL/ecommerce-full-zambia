@@ -1,83 +1,30 @@
 <?php
 use Slim\App;
-use App\Models\Categories;
 use Slim\Views\Twig;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use App\Controllers\Admin\AdminController;
 
-return function(App $app, Twig $twig) {    
+return function(App $app, Twig $twig) {   
+    $adminController = new AdminController($twig);
 
     // Dashboard Admin
-    $app->get('/admin', function ($request, $response, $args) use ($twig) {
-        $categories = Categories::all();
+    $app->get('/admin', [$adminController, 'dashboard']);
 
-        return $twig->render($response, 'admin/dashboard.html.twig', [
-            'username' => 'Michael',
-            'totalCategories' => count($categories),
-            'totalProducts' => 20,
-            'totalOrders' => 3,
-            'categories' => $categories
-        ]);
-    });
+    // Categorias    
+    $app->get('/admin/categorias', [$adminController, 'listCategories']);
+    $app->post('/admin/categorias', [$adminController, 'createCategory']);
+    $app->get('/admin/categorias/{idcategory/editar', [$adminController, 'editCategoryForm']);
+    $app->post('/admin/categorias/{idcategory}/editar', [$adminController, 'editCategory']);
+    $app->get('/admin/categorias/delete/{idcategory}', [$adminController, 'deleteCategory']);
 
-    // Listar Categorias    
-    $app->get('/admin/categorias', function ($request, $response, $args) use ($twig) {
-        $categories = Categories::all();
+    // Produtos
+    $app->get('/admin/produtos', [$adminController, 'listProducts']);
+    $app->get('/admin/produtos/novo', [$adminController, 'newProductForm']);
+    $app->post('/admin/produtos/novo', [$adminController, 'storeProduct']);
 
-        return $twig->render($response, 'admin/categories.html.twig', [
-            'categories' => $categories
-        ]);
-    });
+    // editar produto
+    $app->get('/admin/produtos/{idproduct}/editar', [$adminController, 'editProductForm']);
+    $app->post('/admin/produtos/{idproduct}/editar', [$adminController, 'updateProduct']);
 
-    // Criar categoria
-    $app->post('/admin/categorias', function ($request, $response, $args) {
-        $data = $request->getParsedBody();
-        $descategory = $data['descategory'] ?? null;
-
-        if ($descategory) {
-            Categories::create($descategory);
-        }
-
-        return $response
-            ->withHeader('Location', '/admin/categorias')
-            ->withStatus(302);
-    });
-
-    // Editar categoria (GET)
-    $app->get('/admin/categorias/{idcategory}/editar', function ($request, $response, $args) use ($twig) {        
-        $idcategory = (int) $args['idcategory'];
-        $categoria = Categories::find($idcategory);
-
-        return $twig->render($response, 'admin/editar_categorias.html.twig', [
-            'categoria' => $categoria
-        ]);
-    });
-
-    // Editar categoria (POST)
-    $app->post('/admin/categorias/{idcategory}/editar', function ($request, $response, $args) {
-        $idcategory = (int) $args['idcategory'];
-        $data = $request->getParsedBody();
-        $descategory = $data['descategory'] ?? null;
-
-        if ($idcategory && $descategory) {
-            Categories::update($idcategory, $descategory);
-        }
-
-        return $response
-            ->withHeader('Location', '/admin/categorias')
-            ->withStatus(302);
-    });
-
-    // Deletar categoria
-    $app->get('/admin/categorias/delete/{idcategory}', function ($request, $response, $args) {
-        $idcategory = (int) $args['idcategory'];
-
-        if ($idcategory) {
-            Categories::delete($idcategory);
-        }
-
-        return $response
-            ->withHeader('Location', '/admin/categorias')
-            ->withStatus(302);
-    });
+    // deletar produto
+    $app->get('/admin/produtos/{idproduct}/deletar', [$adminController, 'deleteProduct']);
 };
