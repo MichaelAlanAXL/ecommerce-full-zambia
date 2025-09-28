@@ -1,0 +1,25 @@
+{% block content %}
+    <div class="home-container">
+        <h2>{{ title }}</h2>
+
+        <div class="products-grid">
+            {% for product in products %}
+                <div class="product-card">
+                    <img src="/images/no-image.png" alt="{{ product.desproduct }}">
+                    <h3>{{ product.desproduct }}</h3>
+                    <p class="price">R$ {{ product.vlprice|number_format(2, ',', '.') }}</p>
+                    <a href="/product/{{ product.idproduct }}" class="btn">Ver detalhes</a>
+                </div>
+            {% else %}
+                <p>Nenhum produto encontrado nesta categoria.</p>
+            {% endfor %}
+        </div>
+
+        <!-- Paginação fake por enquanto -->
+        <ul class="pagination">
+            <li class="active"><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+        </ul>
+    </div>
+{% endblock %}

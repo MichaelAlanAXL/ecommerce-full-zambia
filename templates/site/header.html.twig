@@ -18,7 +18,9 @@
                 <ul class="submenu">
                     {% for cat in categories %}
                         <li>
-                            <a href="/categoria/{{ cat.idcategory }}">{{ cat.descategory }}</a>
+                            <a href="/categoria/{{ cat.descategory|lower|replace({' ':'-', 'ç':'c', 'ã':'a', 'é':'e', 'í':'i', 'ó':'o', 'õ':'o', 'ú':'u'}) }}">
+                                {{ cat.descategory }}
+                            </a>
                         </li>
                     {% else %}
                         <li><em>Nenhuma categoria</em></li>

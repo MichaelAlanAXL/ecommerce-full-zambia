@@ -16,5 +16,5 @@ return function(App $app, Twig $twig) {
     $app->get('/login', [$homeController, 'login']);
 
     // Página de categoria dinâmica
-    $app->get('/category/{id}', [$homeController, 'category']);
+    $app->get('/categoria/{slug}', [$homeController, 'category']);
 };

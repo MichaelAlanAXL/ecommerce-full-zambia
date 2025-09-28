@@ -24,6 +24,22 @@ class Categories {
         return $category ?: null;
     }
 
+    public static function findBySlug(string $slug): ?array
+    {
+        $pdo = DB::getConnection();
+
+        $stmt = $pdo->prepare("
+            SELECT *,
+                    LOWER(REPLACE(descategory, ' ', '-')) AS slug
+            FROM tb_categories
+            HAVING slug = :slug
+            LIMIT 1
+        ");
+        
+        $stmt->execute(['slug' => $slug]);
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+    }
+
     public static function update(int $idcategory, string $descategory): void {
         $stmt = DB::getConnection()->prepare("UPDATE tb_categories SET descategory = :descategory WHERE idcategory = :idcategory");
         $stmt->bindParam(':descategory', $descategory);

@@ -1,2 +1,27 @@
-<h2>Welcome to our store!</h2>
-<p>Select a category above.</p>
+{% block content %}
+<div class="home-container">
+    <h2>Nossos Produtos</h2>
+
+    <div class="products-grid">
+        {% for product in products %}
+            <div class="product-card">
+                <img src="/images/no-image.png" alt="{{ product.desproduct }}">
+                <div style="padding:10px;">
+                    <h3>{{ product.desproduct }}</h3>
+                    <p class="price">R$ {{ product.vlprice|number_format(2, ',', '.') }}</p>
+                    <p class="small">Categoria: {{ product.descategory|default('—') }}</p>
+                    <a href="/produto/{{ product.url|default(product.idproduct) }}" class="btn">Ver Detalhes</a>
+                </div>
+            </div>
+        {% else %}
+            <p>Nenhum produto cadastrado ainda.</p>
+        {% endfor %}
+    </div>
+
+    <ul class="pagination">
+        <li class="active"><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+    </ul>
+</div>
+{% endblock %}

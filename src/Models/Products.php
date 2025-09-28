@@ -27,6 +27,20 @@ class Products
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public static function findByCategory(int $idcategory): array
+    {
+        $pdo = DB::getConnection();
+        $stmt = $pdo->prepare("
+            SELECT p.*, c.descategory
+            FROM tb_products p
+            INNER JOIN tb_categories c ON p.idcategory = c.idcategory
+            WHERE p.idcategory = :idcategory
+            ORDER BY p.idproduct DESC
+        ");
+        $stmt->execute([':idcategory' => $idcategory]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public static function create(array $data) 
     {
         $pdo = DB::getConnection();
