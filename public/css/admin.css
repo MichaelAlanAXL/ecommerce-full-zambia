@@ -163,6 +163,16 @@ button:hover, .btn:hover {
     color: #fff;
 }
 
+.btn-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    color: black;
+}
+
 .btn-new {
     background-color: #2a9d8f;
     color: #fff;

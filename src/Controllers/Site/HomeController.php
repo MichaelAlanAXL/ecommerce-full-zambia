@@ -68,6 +68,7 @@ class HomeController
         $products = Products::findByCategory($category['idcategory']);
 
         return $this->render($response, "site/category_products", [
+            'title' => $category['descategory'],
             'category' => $category,
             'products' => $products
         ]);

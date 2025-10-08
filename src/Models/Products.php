@@ -13,6 +13,19 @@ class Products
             SELECT p.*, c.descategory
             FROM tb_products p
             LEFT JOIN tb_categories c ON p.idcategory = c.idcategory
+            WHERE p.is_active = 1
+            ORDER BY p.idproduct DESC
+        ");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function allAdmin(): array
+    {
+        $pdo = DB::getConnection();
+        $stmt = $pdo->query("
+            SELECT p.*, c.descategory
+            FROM tb_products p
+            LEFT JOIN tb_categories c ON p.idcategory = c.idcategory
             ORDER BY p.idproduct DESC
         ");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -35,6 +48,7 @@ class Products
             FROM tb_products p
             INNER JOIN tb_categories c ON p.idcategory = c.idcategory
             WHERE p.idcategory = :idcategory
+                AND p.is_active = 1
             ORDER BY p.idproduct DESC
         ");
         $stmt->execute([':idcategory' => $idcategory]);
@@ -53,7 +67,8 @@ class Products
                 vllength, 
                 vlweight, 
                 url, 
-                idcategory
+                idcategory,
+                is_active
             ) VALUES (
                 :desproduct, 
                 :vlprice, 
@@ -62,7 +77,8 @@ class Products
                 :vllength, 
                 :vlweight, 
                 :url,
-                :idcategory
+                :idcategory,
+                :is_active
             )
         ");
         $stmt->execute([
@@ -73,7 +89,8 @@ class Products
             ':vllength' => $data['vllength'] ?? null,
             ':vlweight' => $data['vlweight'] ?? null,
             ':url' => $data['url'],
-            ':idcategory' => $data['idcategory']
+            ':idcategory' => $data['idcategory'],
+            ':is_active' => $data['is_active'] ?? 1
         ]);
 
         return $pdo->lastInsertId();
@@ -91,7 +108,8 @@ class Products
                 vllength = :vllength, 
                 vlweight = :vlweight, 
                 url = :url,
-                idcategory = :idcategory
+                idcategory = :idcategory,
+                is_active = :is_active
             WHERE idproduct = :idproduct
         ");
 
@@ -104,6 +122,7 @@ class Products
         $stmt->bindValue(':vlweight', $data['vlweight']);
         $stmt->bindValue(':url', $data['url']);
         $stmt->bindValue(':idcategory', $data['idcategory'], PDO::PARAM_INT);
+        $stmt->bindValue(':is_active', $data['is_active'] ?? 1, PDO::PARAM_INT);
 
         $stmt->execute();
 

@@ -10,9 +10,10 @@ class Categories {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function create(string $descategory): void {
-        $stmt = DB::getConnection()->prepare("INSERT INTO tb_categories (descategory) VALUES (:descategory)");
+    public static function create(string $descategory, int $is_active = 1): void {
+        $stmt = DB::getConnection()->prepare("INSERT INTO tb_categories (descategory, is_active) VALUES (:descategory, :is_active)");
         $stmt->bindParam(':descategory', $descategory);
+        $stmt->bindParam(':is_active', $is_active);
         $stmt->execute();
     }
 
@@ -40,10 +41,11 @@ class Categories {
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
 
-    public static function update(int $idcategory, string $descategory): void {
-        $stmt = DB::getConnection()->prepare("UPDATE tb_categories SET descategory = :descategory WHERE idcategory = :idcategory");
+    public static function update(int $idcategory, string $descategory, int $is_active = 1): void {
+        $stmt = DB::getConnection()->prepare("UPDATE tb_categories SET descategory = :descategory, is_active = :is_active WHERE idcategory = :idcategory");
         $stmt->bindParam(':descategory', $descategory);
         $stmt->bindParam(':idcategory', $idcategory);
+        $stmt->bindParam(':is_active', $is_active);
         $stmt->execute();
     }
 
@@ -51,5 +53,10 @@ class Categories {
         $stmt = DB::getConnection()->prepare("DELETE FROM tb_categories WHERE idcategory = :idcategory");
         $stmt->bindParam(':idcategory', $idcategory);
         $stmt->execute();
+    }
+
+    public static function allActive(): array {
+        $stmt = DB::getConnection()->query("SELECT * FROM tb_categories WHERE is_active = 1 ORDER BY descategory");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

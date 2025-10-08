@@ -12,14 +12,15 @@ return function(App $app, Twig $twig) {
     // Categorias    
     $app->get('/admin/categorias', [$adminController, 'listCategories']);
     $app->post('/admin/categorias', [$adminController, 'createCategory']);
-    $app->get('/admin/categorias/{idcategory/editar', [$adminController, 'editCategoryForm']);
-    $app->post('/admin/categorias/{idcategory}/editar', [$adminController, 'editCategory']);
+    $app->get('/admin/categorias/{idcategory}/editar', [$adminController, 'editCategory']);
+    $app->post('/admin/categorias/{idcategory}/editar', [$adminController, 'editCategoryPost']);
     $app->get('/admin/categorias/delete/{idcategory}', [$adminController, 'deleteCategory']);
 
     // Produtos
     $app->get('/admin/produtos', [$adminController, 'listProducts']);
     $app->get('/admin/produtos/novo', [$adminController, 'newProductForm']);
     $app->post('/admin/produtos/novo', [$adminController, 'storeProduct']);
+    $app->get('/admin/produtos/{idproduct}/toggle', [$adminController, 'toggleProductsStatus']);
 
     // editar produto
     $app->get('/admin/produtos/{idproduct}/editar', [$adminController, 'editProductForm']);

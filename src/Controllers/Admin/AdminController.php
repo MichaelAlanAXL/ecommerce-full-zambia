@@ -91,9 +91,10 @@ class AdminController
         $idcategory = (int)$args['idcategory'];
         $data = $request->getParsedBody();
         $descategory = $data['descategory'] ?? null;
+        $is_active = isset($data['is_active']) ? 1 : 0;
 
         if ($idcategory && $descategory) {
-            Categories::update($idcategory, $descategory);
+            Categories::update($idcategory, $descategory, $is_active);
         }
         
         return $response
@@ -118,12 +119,26 @@ class AdminController
     // List Products
     public function listProducts(Request $request, Response $response, $args): Response
     {
-        $products = Products::all();
+        $products = Products::allAdmin();
 
         return $this->render($response, "admin/products", [
             'title' => 'Produtos',
             'products' => $products
         ]);
+    }
+    
+    // Ativar/Desativar produto
+    public function toggleProductsStatus(Request $request, Response $response, $args)
+    {
+        $id = (int)$args['idproduct'];
+        $product = Products::find($id);
+
+        if ($product) {
+            $newStatus = $product['is_active'] ? 0 : 1;
+            Products::update($id, array_merge($product, ['is_active' => $newStatus]));
+        }
+
+        return $response->withHeader('Location', '/admin/produtos')->withStatus(302);
     }
 
     // formulário de novo produto
@@ -150,6 +165,7 @@ class AdminController
         $vlweight = $data['vlweight'] ?? null;
         $url = $data['url'] ?? null;
         $idcategory = $data['idcategory'] ?? null;
+        $is_active = isset($data['is_active']) ? 1 : 0;
 
         if ($desproduct && $vlprice && $vlwidth && $vlheight && $vllength && $vlweight && $url && $idcategory) {
             Products::create([
@@ -160,7 +176,8 @@ class AdminController
                 'vllength' => $vllength,
                 'vlweight' => $vlweight,
                 'url' => $url,
-                'idcategory' =>$idcategory
+                'idcategory' =>$idcategory,
+                'is_active' => $is_active
             ]);
         }
         
@@ -196,6 +213,7 @@ class AdminController
         $vlweight = $data['vlweight'] ?? null;
         $url = $data['url'] ?? null;
         $idcategory = $data['idcategory'] ?? null;
+        $is_active = isset($data['is_active']) ? 1 : 0;
         
 
         if ($idproduct && $desproduct && $vlprice && $vlwidth && $vlheight && $vllength && $vlweight && $url && $idcategory) {
@@ -207,7 +225,8 @@ class AdminController
                 'vllength' => $vllength,
                 'vlweight' => $vlweight,
                 'url' => $url,
-                'idcategory' =>$idcategory
+                'idcategory' =>$idcategory,
+                'is_active' => $is_active
             ]);
         }
         

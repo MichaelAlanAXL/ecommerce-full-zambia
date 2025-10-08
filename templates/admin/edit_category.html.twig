@@ -1,0 +1,7 @@
+<h2>Editar Categoria</h2>
+<form method="post">
+  <input type="text" name="descategory" value="{{ category.descategory }}" required>
+  <input type="checkbox" name="is_active" {% if category.is_active %}checked{% endif %}>
+  Categoria ativa
+  <button type="submit">Salvar</button>
+</form>

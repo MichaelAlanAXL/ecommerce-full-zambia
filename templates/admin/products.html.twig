@@ -10,6 +10,7 @@
             <th>Preço</th>
             <th>Categoria</th>
             <th>Data de Cadastro</th>
+            <th>Status</th>
             <th>Ações</th>
         </tr>
     </thead>
@@ -23,12 +24,24 @@
                     <td>{{ product.descategory }}</td>
                     <td>{{ product.dtregister }}</td>
                     <td>
+                        {% if product.is_active %}
+                            <span style="color: green;">Ativo</span>
+                        {% else %}
+                            <span style="color: red;">Inativo</span>
+                        {% endif %}
+                    </td>
+                    <td>
                         <a href="/admin/produtos/{{ product.idproduct }}/editar" class="btn btn-edit">Editar</a>
                         <a href="/admin/produtos/{{ product.idproduct }}/deletar" 
                             class="btn btn-delete" 
-                            onclick="return confirm('Tem certeza que deseja excluir o produto {{ product.desprodutct }}?');">
+                            onclick="return confirm('Tem certeza que deseja excluir o produto {{ product.desproduct }}?');">
                              Excluir
                         </a>
+                        {% if product.is_active %}
+                            <a href="/admin/produtos/{{ product.idproduct }}/toggle" class="btn btn-warning">Desativar</a>
+                        {% else %}
+                            <a href="/admin/produtos/{{ product.idproduct }}/toggle" class="btn btn-success">Ativar</a>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}

@@ -24,8 +24,8 @@
                 <td>{{ cat.descategory }}</td>
                 <td>{{ cat.dtregister }}</td>
                 <td>
-                    <a href="/admin/categorias/{{ cat.idcategory }}/editar">Editar</a> |
-                    <a href="/admin/categorias/delete/{{ cat.idcategory }}" onclick="return confirm('Deseja excluir?')">Excluir</a>
+                    <a href="/admin/categorias/{{ cat.idcategory }}/editar" class="btn btn-edit">Editar</a> |
+                    <a href="/admin/categorias/delete/{{ cat.idcategory }}" onclick="return confirm('Deseja excluir?')" class="btn btn-delete">Excluir</a>
                 </td>
             </tr>
         {% else %}
