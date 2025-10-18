@@ -40,6 +40,14 @@ class Products
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public static function findByUrl(string $url)
+    {
+        $pdo = DB::getConnection();
+        $stmt = $pdo->prepare("SELECT * FROM tb_products WHERE url = :url LIMIT 1");
+        $stmt->execute([':url' => $url]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public static function findByCategory(int $idcategory): array
     {
         $pdo = DB::getConnection();

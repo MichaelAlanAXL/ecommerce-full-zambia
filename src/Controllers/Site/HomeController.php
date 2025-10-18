@@ -74,6 +74,48 @@ class HomeController
         ]);
     }
 
+    // productDetail por id
+    public function productDetail(Request $request, Response $response, $args): Response
+    {
+        $idproduct = (int)$args['idproduct'] ?? 0;
+        $product = Products::find($idproduct);
+
+        if (!$product) {
+            throw new HttpNotFoundException($request, "Product not found.");
+        }
+
+        $category = Categories::find((int)$product['idcategory']);
+
+        return $this->render($response, "site/product_detail", [
+            'title' => $product['desproduct'],
+            'product' => $product,
+            'category' => $category
+        ]);
+    }
+
+    // productDetail por url amigavel (slug bonitinho)
+    public function productDetailByUrl(Request $request, Response $response, $args): Response
+    {
+        $url = $args['url'] ?? null;
+        if (!$url) {
+            throw new HttpNotFoundException($request, "Product URL not found.");
+        }
+
+        $product = Products::findByUrl($url);
+
+        if (!$product) {
+            throw new HttpNotFoundException($request, "Product not found.");
+        }
+
+        $category = Categories::find((int)$product['idcategory']);
+
+        return $this->render($response, "site/product_detail", [
+            'title' => $product['desproduct'],
+            'product' => $product,
+            'category' => $category
+        ]);
+    }
+
     public function login(Request $request, Response $response, $args): Response
     {
         return $this->render($response, "site/login", [

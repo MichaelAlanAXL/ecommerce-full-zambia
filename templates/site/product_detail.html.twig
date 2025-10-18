@@ -1,0 +1,70 @@
+{% block content %}
+<div class="container product-page">
+
+  <!-- Breadcrumbs -->
+  <nav class="breadcrumb">
+    <a href="/">Home</a> /
+    {% if category is defined and category %}
+      <a href="/categoria/{{ category.descategory|lower|replace({' ':'-'}) }}">{{ category.descategory }}</a> /
+    {% endif %}
+    <span>{{ product.desproduct }}</span>
+  </nav>
+
+  <div class="product-detail-grid">
+    <div class="gallery">
+      <!-- Main image -->
+      <div class="main-image">
+        <img id="mainImg" src="/images/products/{{ product.idproduct }}/1.jpg" 
+             onerror="this.src='/images/no-image.png';" alt="{{ product.desproduct }}">
+      </div>
+
+      <!-- thumbnails (tentamos 1..4) -->
+      <div class="thumbs">
+        {% for i in 1..4 %}
+          <img src="/images/products/{{ product.idproduct }}/{{ i }}.jpg" 
+               onerror="this.style.display='none';" 
+               alt="{{ product.desproduct }} thumb {{ i }}" 
+               onclick="document.getElementById('mainImg').src=this.src;">
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="product-info">
+      <h1 class="product-title">{{ product.desproduct }}</h1>
+
+      <div class="price">
+        <strong>R$ {{ product.vlprice|number_format(2, ',', '.') }}</strong>
+      </div>
+
+      <div class="short-actions">
+        <!-- botão Add to cart desabilitado por enquanto -->
+        <button class="btn btn-primary" disabled>Adicionar ao carrinho (em breve)</button>
+      </div>
+
+      <hr>
+
+      <h3>Detalhes do produto</h3>
+      <ul class="product-specs">
+        <li><strong>Largura:</strong> {{ product.vlwidth }} cm</li>
+        <li><strong>Altura:</strong> {{ product.vlheight }} cm</li>
+        <li><strong>Comprimento:</strong> {{ product.vllength }} cm</li>
+        <li><strong>Peso:</strong> {{ product.vlweight }} kg</li>
+      </ul>
+
+      <div class="product-description">
+        <!-- se no futuro tiver descrição, mostre aqui -->
+        {% if product.description is defined %}
+          <p>{{ product.description }}</p>
+        {% else %}
+          <p>Mais informações sobre o produto serão adicionadas em breve.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- script mínimo para troca de imagens (já no template por simplicidade) -->
+<script>
+  // se quiser que o primeiro thumb troque main, já configurado via onclick
+</script>
+{% endblock %}
