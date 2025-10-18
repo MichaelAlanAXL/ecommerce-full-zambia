@@ -7,6 +7,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Views\Twig;
 use App\Models\Categories;
 use App\Models\Products;
+use App\Models\Orders;
 
 class AdminController 
 {
@@ -40,9 +41,9 @@ class AdminController
         return $this->render($response, "admin/dashboard", [
             'title' => 'Painel Administrativo',
             'username' => 'Michael',
-            'totalCategories' => count($categories),
-            'totalProducts' => 20, // TODO: count(Products::all()),
-            'totalOrders' => 3,
+            'totalCategories' => Categories::countAll(),
+            'totalProducts' => Products::countAll(),
+            'totalOrders' => Orders::countAll(),
             'categories' => $categories
         ]);
     }

@@ -10,6 +10,13 @@ class Categories {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public static function countAll(): int
+    {
+        $db = DB::getConnection();
+        $stmt = $db->query("SELECT COUNT(*) as total FROM tb_categories");
+        return (int)$stmt->fetchColumn();
+    }
+
     public static function create(string $descategory, int $is_active = 1): void {
         $stmt = DB::getConnection()->prepare("INSERT INTO tb_categories (descategory, is_active) VALUES (:descategory, :is_active)");
         $stmt->bindParam(':descategory', $descategory);

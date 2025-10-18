@@ -19,6 +19,13 @@ class Products
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public static function countAll(): int 
+    {
+        $db = DB::getConnection();
+        $stmt = $db->query("SELECT COUNT(*) as total FROM tb_products");
+        return (int)$stmt->fetchColumn();
+    }
+
     public static function allAdmin(): array
     {
         $pdo = DB::getConnection();
